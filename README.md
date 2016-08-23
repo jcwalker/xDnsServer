@@ -20,7 +20,7 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 Secondary zones allow client machine in primary DNS zones to do DNS resolution of machines in the secondary DNS zone.
 * **xDnsServerZoneTransfer** This resource allows a DNS Server zone data to be replicated to another DNS server.
 * **xDnsRecord** This resource allows for the creation of IPv4 host (A) records or CNames against a specific zone on the DNS server
-* **xDnserverDirectoryPartition** This resource allows for the creation and managing of a DNS application directory partition
+* **xDnsServerDirectoryPartition** This resource allows for the creation and managing of a DNS application directory partition
 
 ### xDnsServerForwarder
 
