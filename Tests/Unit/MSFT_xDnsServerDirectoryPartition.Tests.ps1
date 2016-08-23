@@ -11,11 +11,8 @@
    Future and therefore should not be altered if possible.
 #>
 
-
-# TODO: Customize these parameters...
-$script:DSCModuleName      = 'xDnsServer' # Example xNetworking
-$script:DSCResourceName    = 'MSFT_xDnsServerDirectoryPartition' # Example MSFT_xFirewall
-# /TODO
+$script:DSCModuleName      = 'xDnsServer'
+$script:DSCResourceName    = 'MSFT_xDnsServerDirectoryPartition'
 
 #region HEADER
 # Unit Test Template Version: 1.1.0
@@ -33,81 +30,110 @@ $TestEnvironment = Initialize-TestEnvironment `
     -TestType Unit 
 #endregion HEADER
 
-# TODO: Other Optional Init Code Goes Here...
-
 # Begin Testing
 try
 {
-    #region Pester Test Initialization
-
-    #endregion Pester Test Initialization
 
     #region Example state 1
-    Describe "The system is not in the desired state" {
-        $mockResults = @{
-            DirectoryPartitionName = "contoso.com"            
+    InModuleScope $script:DSCResourceName {
+        Describe "The system is not in the desired state" {
+            $mockResults = @{
+                DirectoryPartitionName = "contoso.com"
+                Flags = 'Not-Enlisted '                                  
+            }
+        
+            #Mock Get-DnsServerDirectoryPartition -MockWith {} -ParameterFilter {$Name -eq 'noDirectory.com'}
+            Mock Get-DnsServerDirectoryPartition -MockWith {$mockResults} -ParameterFilter {$Name -eq 'contoso.com'}
+            Mock Add-DnsServerDirectoryPartition -MockWith {}       
+            $testParameters = @{
+                Name   = 'contoso.com'
+                Ensure = 'Present'
+                Credential = [PSCredential]::Empty
+            }     
+            $cred = ([PSCRedential]::Empty)
+
+            It "Get method returns 'Ensure is Absent' when partition is Absent" {
+                Mock Get-DnsServerDirectoryPartition -MockWith {}
+                $getResult = Get-TargetResource -Name 'noDirectory.com' -Ensure Absent -Credential $cred
+
+                $getResult.Ensure | Should be 'Absent'
+            }
+
+            It "Get method returns Register is False" {
+                Mock Get-DnsServerDirectoryPartition -MockWith {$mockResults}
+                $getResult = Get-TargetResource @testParameters
+
+                $getResult.Register | Should be $false
+            }
+
+            It "Test method returns false when directory is present and Ensure is Absent" {
+                Test-TargetResource -Name 'contoso.com' -Ensure Absent -Credential $cred | Should be $false
+            }
+
+            It "Test method returns false when directory is Absent and Ensure is Present" {
+                Mock Get-DnsServerDirectoryPartition -MockWith {}
+                Test-TargetResource -Name 'noDirectory.com' -Ensure Present -Credential $cred | Should be $false
+            }
+        
+            Mock Invoke-Command -MockWith {}
+            Mock Wait-PartitionTask -MockWith {}           
+
+            It "Set method calls Add-DnsServerDirectoryPartition when Ensure is Present" {
+                Mock Add-DnsServerDirectoryPartition -MockWith {}
+                Set-TargetResource -Name 'contoso.com' -Ensure Present -Credential ([PSCredential]::Empty)
+
+                Assert-MockCalled Add-DnsServerDirectoryPartition
+            }
+
+            It 'Set method calls Remove-DnsServerDirectoryPartition when Ensure is Absent' {
+
+                Set-TargetResource -Name 'contoso.com' -Ensure Absent -Credential ([PSCredential]::Empty)
+
+                Assert-MockCalled Invoke-Command
+            }
         }
-
-        Mock Get-DnsServerDirectoryPartition -MockWith {} -ParameterFilter {$Name -eq 'noDirectory.com'}
-        Mock Get-DnsServerDirectoryPartition -MockWith {$mockResults} -ParameterFilter {$Name -eq 'contoso.com'}
-        Mock Add-DnsServerDirectoryPartition -MockWith {}
-        Mock Remove-DnsServerDirectoryPartition -MockWith {}
-        #TODO: Create a set of parameters to test your get/test/set methods in this state
-        $testParameters = @{
-            Name   = 'contoso.com'
-            Ensure = 'Present'
-        }      
-     
-        #TODO: Update the assertions below to align with the expected results of this state
-        It "Get method returns 'Ensure -eq Absent' when partition is Absent" {
-            $getResult = Get-TargetResource -Name 'noDirectory.com' -Ensure Absent
-
-            $getResult.Ensure | Should be 'Absent'
-        }
-
-        It "Get method returns 'Ensure is Present' when partition is Present" {
-            $getResult = Get-TargetResource -Name 'contoso.com' -Ensure Present
-
-            $getResult.Ensure | Should be 'Present'
-        }
-
-        It "Test method returns false when directory is present and Ensure is Absent" {
-            Test-TargetResource -Name 'contoso.com' -Ensure Absent | Should be $false
-        }
-
-        It "Test method returns false when directory is Absent and Ensure is Present" {
-            Test-TargetResource -Name 'noDirectory.com' -Ensure Present | Should be $false
-        }
-
-        It "Set method calls Add-DnsServerDirectoryPartition when Ensure is Present" {
-            Set-TargetResource -Name 'contoso.com' -Ensure Present
-
-            Assert-MockCalled Add-DnsServerDirectoryPartition
-        }
-
-        It 'Set method calls Remove-DnsServerDirectoryPartition when Ensure is Absent' {
-            Set-TargetResource -Name 'contoso.com' -Ensure Absent
-
-            Assert-MockCalled Remove-DnsServerDirectoryPartition
-        }
+        
     }
     #endregion Example state 1
 
     #region Example state 2
     Describe "The system is in the desired state" {
         $mockResults = @{
-            DirectoryPartitionName = "contoso.com"            
+            DirectoryPartitionName = "contoso.com"
+            Flags = 'Not-Enlisted '             
         }
-        
+        $testParameters = @{
+            Name   = 'contoso.com'
+            Ensure = 'Present'
+            Credential = [PSCredential]::Empty
+        } 
         Mock Get-DnsServerDirectoryPartition -MockWith {} -ParameterFilter {$Name -eq 'noDirectory.com'}
         Mock Get-DnsServerDirectoryPartition -MockWith {$mockResults} -ParameterFilter {$Name -eq 'contoso.com'}
 
-        It "Test method returns true" {
-            Test-TargetResource -Name 'contoso.com' -Ensure Present | Should be $true
+        It "Get method returns 'Ensure is Present' when partition is Present" {
+            Mock Get-DnsServerDirectoryPartition -MockWith {$mockResults}
+            $getResult = Get-TargetResource @testParameters
+
+            $getResult.Ensure | Should be 'Present'
+        }
+        It "Test method returns true when expecting Present" {
+            {Test-TargetResource @testParameters} | Should be $true
         }
 
-        It "Test method returns true" {
-            Test-TargetResource -Name 'noDirectory.com' -Ensure Absent | Should be $true
+        It "Test method returns true when expecting absent" {
+            Mock Get-DnsServerDirectoryPartition -MockWith {}
+            {Test-TargetResource -Name 'noDirectory.com' -Ensure Absent `
+                -Credential ([PSCredential]::Empty)} | Should be $true
+        }
+
+        It "Test method returns True when Register expected True" {
+            $mockRegisterTrue = @{
+                Name     = 'contoso.com'
+                Ensure   = 'Present'
+                Register = $true
+            }
+            Mock Get-TargetResource -MockWith {$mockRegisterTrue}
+            {Test-TargetResource -Name 'contoso.com' -Ensure Present -Register $true -Credential ([PSCredential]::Empty)} | Should be $true
         }
     }
     #endregion Example state 2
@@ -119,5 +145,4 @@ finally
     Restore-TestEnvironment -TestEnvironment $TestEnvironment
     #endregion
 
-    # TODO: Other Optional Cleanup Code Goes Here...
 }
