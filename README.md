@@ -2,7 +2,7 @@
 
 # xDnsServer
 
-The **xDnsServer** DSC resources configure and manage a DNS server. They include **xDnsServerPrimaryZone**, **xDnsServerSecondaryZone**, **xDnsServerADZone**, **xDnsServerZoneTransfer** and **xDnsARecord**.
+The **xDnsServer** DSC resources configure and manage a DNS server. They include **xDnsServerPrimaryZone**, **xDnsServerSecondaryZone**, **xDnsServerADZone**, **xDnsServerZoneTransfer**,**xDnsServerDirectoryPartition** and **xDnsARecord**.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
@@ -20,6 +20,7 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 Secondary zones allow client machine in primary DNS zones to do DNS resolution of machines in the secondary DNS zone.
 * **xDnsServerZoneTransfer** This resource allows a DNS Server zone data to be replicated to another DNS server.
 * **xDnsRecord** This resource allows for the creation of IPv4 host (A) records or CNames against a specific zone on the DNS server
+* **xDnserverDirectoryPartition** This resource allows for the creation and managing of a DNS application directory partition
 
 ### xDnsServerForwarder
 
@@ -80,6 +81,11 @@ Values include: { None | Any | Named | Specific }
 Values include: { ARecord | CName }
 * **Ensure**: Whether the host record should be present or removed
 
+### xDnsServerDirectoryPartition
+* **Name**: Specifies a name for the DNS application directory partition being configured
+* **Register**: Specifies to register the local DNS server with the directory partition
+* **Credential**: Specifies the credentials required to modify or remove a DNS directory partition
+* **Ensure**: Whether the DNS application partition should present or removed
 
 ## Versions
 

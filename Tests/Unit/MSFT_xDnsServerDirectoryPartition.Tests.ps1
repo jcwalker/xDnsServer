@@ -137,12 +137,10 @@ try
         }
     }
     #endregion Example state 2
-
 }
 finally
 {
     #region FOOTER
     Restore-TestEnvironment -TestEnvironment $TestEnvironment
     #endregion
-
 }
