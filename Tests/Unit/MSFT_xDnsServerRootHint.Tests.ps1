@@ -1,4 +1,4 @@
-﻿<#
+<#
 .Synopsis
    Template for creating DSC Resource Unit Tests
 .DESCRIPTION
@@ -11,9 +11,9 @@
    Future and therefore should not be altered if possible.
 #>
 
-$script:DSCModuleName      = 'xDnsServer'
-$script:DSCResourceName    = 'MSFT_xDnsServerRootHint'
-# /TODO
+$script:DSCModuleName   = 'xDnsServer'
+$script:DSCResourceName = 'MSFT_xDnsServerRootHint'
+
 
 #region HEADER
 # Unit Test Template Version: 1.1.0
@@ -34,11 +34,6 @@ $TestEnvironment = Initialize-TestEnvironment `
 # Begin Testing
 try
 {
-    #region Pester Test Initialization
-
-    
-    #endregion Pester Test Initialization
-
     #region Example state 1
     InModuleScope $script:DSCResourceName {
         Describe "The system is not in the desired state" {
@@ -54,7 +49,7 @@ try
                 NameServer = 'y.root-servers.net'
             }
             Mock Get-DnsServerRootHint -MockWith {return @{NameServer = @{RecordData = @{NameServer='y.root-servers.net.'}}} }
-            Mock Get-IPAddressString -MockWith {return @('10.0.0.1')}           
+            Mock Get-IPAddressString -MockWith {return @('10.0.0.1')}        
                 
                 
             It "Get method returns 'something'" {
@@ -197,32 +192,6 @@ try
                 It 'Should return input string if string ends with dot' {
                     Format-OutputDot -InputString 'String.' | Should be 'String.'
                 }                
-            }
-  
-            <#
-                $mockGetRootHint = @{
-                    NameServer = @{RecordData = @{NameServer ='ServerA.root.net.'}}
-                    IPAddress  = @{
-                        RecordData = @{IpV6Address = @{IPAddressToString='2001:500:2f::f'}}
-                        RecordType = 'AAAA'
-                    }
-                }
-            #>           
-
-            Context 'Get-IPAddressString' {
- 
-                It 'Should return an IPv6 address' {                
-                    $mockGetRootHint = Import-Clixml -Path $PSScriptRoot\..\..\Misc\MockObjects\RoothintsIPV6.xml
-                    Mock Get-DnsServerRootHint -MockWith {$mockGetRootHint}
-                    $getResults = Get-IPAddressString -NameServer 'h.root-servers.net'
-                    $getResults | Should be '2001:500:1::53'
-                }
-                It 'Should return an IPv4 address' {
-                    $mockGetRootHint = Import-Clixml -Path $PSScriptRoot\..\..\Misc\MockObjects\RoothintsIPV4.xml
-                    Mock Get-DnsServerRootHint -MockWith {$mockGetRootHint}
-                    $getResults = Get-IPAddressString -NameServer 'a.root-servers.net'
-                    $getResults | Should be '198.41.0.4'                
-                }   
             }
         }
     }

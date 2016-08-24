@@ -83,35 +83,6 @@ function Compare-Array
 
 }
 
-#Internal function to remove all common parameters from $PSBoundParameters before it is passed to Set-CimInstance
-function Remove-CommonParameter
-{
-    [OutputType([System.Collections.Hashtable])]
-    [cmdletbinding()]
-    param
-    (
-        [hashtable]
-        $InputParameter
-    )
-
-    $inputClone = $InputParameter.Clone()
-    $commonParameters += [System.Management.Automation.PSCmdlet]::CommonParameters
-    $commonParameters += [System.Management.Automation.PSCmdlet]::OptionalCommonParameters
-
-    foreach ($parameter in $InputParameter.Keys)
-    {
-        foreach ($commonParameter in $commonParameters)
-        {
-            if ($parameter -eq $commonParameter)
-            {
-                $inputClone.Remove($parameter)
-            }
-        }
-    }
-
-    $inputClone
-}
-
 #Internal function to add dot to end of string to match the output of Get-DnsServerRootHint
 function Format-OutputDot
 {
@@ -147,7 +118,7 @@ function Get-IPAddressString
     $IPs = @()
     $formatedNameServer = Format-OutputDot -InputString $NameServer    
     $getResult = Get-DnsServerRootHint
-    $rootHintRecords = $getResult | where {$_.NameServer.RecordData.NameServer -eq $formatedNameServer}
+    $rootHintRecords = $getResult | Where-Object {$_.NameServer.RecordData.NameServer -eq $formatedNameServer}
     
     foreach ($record in $rootHintRecords.IPAddress)
     {

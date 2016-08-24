@@ -2,7 +2,7 @@
 
 # xDnsServer
 
-The **xDnsServer** DSC resources configure and manage a DNS server. They include **xDnsServerPrimaryZone**, **xDnsServerSecondaryZone**, **xDnsServerADZone**, **xDnsServerZoneTransfer** and **xDnsARecord**.
+The **xDnsServer** DSC resources configure and manage a DNS server. They include **xDnsServerPrimaryZone**, **xDnsServerSecondaryZone**, **xDnsServerADZone**, **xDnsServerZoneTransfer**, **xDnsServerRootHint and **xDnsARecord**.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
@@ -19,7 +19,8 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 * **xDnsServerSecondaryZone** sets a Secondary zone on a given DNS server.
 Secondary zones allow client machine in primary DNS zones to do DNS resolution of machines in the secondary DNS zone.
 * **xDnsServerZoneTransfer** This resource allows a DNS Server zone data to be replicated to another DNS server.
-* **xDnsRecord** This resource allows for the creation of IPv4 host (A) records or CNames against a specific zone on the DNS server
+* **xDnsRecord** This resource allows for the creation of IPv4 host (A) records or CNames against a specific zone on the DNS server.
+* **xDnsServerRootHint** This resource allows the addition and removal of root hint servers.
 
 ### xDnsServerForwarder
 
@@ -80,6 +81,10 @@ Values include: { None | Any | Named | Specific }
 Values include: { ARecord | CName }
 * **Ensure**: Whether the host record should be present or removed
 
+### xDnsServerRootHint
+* **NameServer**: Specifies the fully qualified domain name of the root name server.
+* **IPAddresses**: Specifies an array of IPv4 or IPv6 addresses of DNS servers.
+* **Ensure**: Specifies to remove or add the root hint.
 
 ## Versions
 
