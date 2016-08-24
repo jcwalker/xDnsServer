@@ -83,31 +83,3 @@ function Compare-Array
 
 }
 
-#Internal function to remove all common parameters from $PSBoundParameters before it is passed to Set-CimInstance
-function Remove-CommonParameter
-{
-    [OutputType([System.Collections.Hashtable])]
-    [cmdletbinding()]
-    param
-    (
-        [hashtable]
-        $InputParameter
-    )
-
-    $inputClone = $InputParameter.Clone()
-    $commonParameters += [System.Management.Automation.PSCmdlet]::CommonParameters
-    $commonParameters += [System.Management.Automation.PSCmdlet]::OptionalCommonParameters
-
-    foreach ($parameter in $InputParameter.Keys)
-    {
-        foreach ($commonParameter in $commonParameters)
-        {
-            if ($parameter -eq $commonParameter)
-            {
-                $inputClone.Remove($parameter)
-            }
-        }
-    }
-
-    $inputClone
-}

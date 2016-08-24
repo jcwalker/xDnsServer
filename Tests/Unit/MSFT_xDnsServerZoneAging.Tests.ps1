@@ -11,11 +11,8 @@
    Future and therefore should not be altered if possible.
 #>
 
-
-# TODO: Customize these parameters...
-$script:DSCModuleName      = 'xDnsServer'
-$script:DSCResourceName    = 'MSFT_xDnsServerZoneAging'
-# /TODO
+$script:DSCModuleName    = 'xDnsServer'
+$script:DSCResourceName  = 'MSFT_xDnsServerZoneAging'
 
 #region HEADER
 # Unit Test Template Version: 1.1.0
@@ -33,24 +30,13 @@ $TestEnvironment = Initialize-TestEnvironment `
     -TestType Unit 
 #endregion HEADER
 
-# TODO: Other Optional Init Code Goes Here...
-
 # Begin Testing
 try
 {
-    #region Pester Test Initialization
-
-    # TODO: Optionally create any variables here for use by your tests
-    # See https://github.com/PowerShell/xNetworking/blob/dev/Tests/Unit/MSFT_xDhcpClient.Tests.ps1
-    # Mocks that should be applied to all cmdlets being tested may
-    # also be created here if required.
-
-    #endregion Pester Test Initialization
 
     #region Example state 1
     Describe "The system is not in the desired state" {
-        #TODO: Mock cmdlets here that represent the system not being in the desired state
-                
+                       
         $testParameters = @{
             ZoneName          = 'contoso.com'
             AgingEnabled      = $true
@@ -137,9 +123,6 @@ try
 
     #region Non-Exported Function Unit Tests
 
-    # TODO: Pester Tests for any non-exported Helper Cmdlets
-    # If the resource does not contain any non-exported helper cmdlets then
-    # this block may be safetly deleted.
     InModuleScope $script:DSCResourceName {
         
         $array1 = 1,2,3
@@ -175,6 +158,4 @@ finally
     #region FOOTER
     Restore-TestEnvironment -TestEnvironment $TestEnvironment
     #endregion
-
-    # TODO: Other Optional Cleanup Code Goes Here...
 }

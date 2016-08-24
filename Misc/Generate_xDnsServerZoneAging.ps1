@@ -1,5 +1,5 @@
-﻿$resourceProperties = @()
-
+﻿
+$resourceProperties = @()
 $resourceProperties += New-xDscResourceProperty -Name ZoneName -Type String -Attribute Key -Description "Specifies the name of a zone. This cmdlet is relevant only for primary zones."
 $resourceProperties += New-xDscResourceProperty -Name AgingEnabled -Type Boolean -Attribute Write -Description "Indicates whether to enable aging and scavenging for a zone."
 $resourceProperties += New-xDscResourceProperty -Name ScavengeServers -Type String[] -Attribute Write -Description "Specifies an array of IP addresses for DNS servers."

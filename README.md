@@ -2,7 +2,7 @@
 
 # xDnsServer
 
-The **xDnsServer** DSC resources configure and manage a DNS server. They include **xDnsServerPrimaryZone**, **xDnsServerSecondaryZone**, **xDnsServerADZone**, **xDnsServerZoneTransfer** and **xDnsARecord**.
+The **xDnsServer** DSC resources configure and manage a DNS server. They include **xDnsServerPrimaryZone**, **xDnsServerSecondaryZone**, **xDnsServerADZone**, **xDnsServerZoneTransfer**, **xDnsServerZoneAging** and **xDnsARecord**.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
@@ -19,7 +19,8 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 * **xDnsServerSecondaryZone** sets a Secondary zone on a given DNS server.
 Secondary zones allow client machine in primary DNS zones to do DNS resolution of machines in the secondary DNS zone.
 * **xDnsServerZoneTransfer** This resource allows a DNS Server zone data to be replicated to another DNS server.
-* **xDnsRecord** This resource allows for the creation of IPv4 host (A) records or CNames against a specific zone on the DNS server
+* **xDnsRecord** This resource allows for the creation of IPv4 host (A) records or CNames against a specific zone on the DNS server.
+* **xDnsServerAging** This resource allows management and configuration of the aging on a DNS Zone.
 
 ### xDnsServerForwarder
 
@@ -80,6 +81,12 @@ Values include: { None | Any | Named | Specific }
 Values include: { ARecord | CName }
 * **Ensure**: Whether the host record should be present or removed
 
+### xDnsServerZoneAging
+* **ZoneName**: Specifies the name of a zone. This cmdlet is relevant only for primary zones.
+* **AgingEnabled**: Indicates whether to enable aging and scavenging for a zone.
+* **ScavengeServers**: Specifies an array of IP addresses for DNS servers.
+* **RefreshInterval**: Specifies the refresh interval as a TimeSpan object.
+* **NoRefreshInterval**: Specifies the length of time as a TimeSpan object.
 
 ## Versions
 
