@@ -20,11 +20,19 @@ function Get-TargetResource
     )
 
     $dnsZoneAgingResult = Get-DnsServerZoneAging -ZoneName $ZoneName
-    
+
+   if($dnsZoneAgingResult.ScavengeServers)
+   {
+       $scavengeResult = @($dnsZoneAgingResult.ScavengeServers)
+   }
+   else
+   {
+       $scavengeResult = $null    
+   }
     $returnValue = @{
         ZoneName          = $dnsZoneAgingResult.ZoneName
         AgingEnabled      = $dnsZoneAgingResult.AgingEnabled
-        ScavengeServers   = @($dnsZoneAgingResult.ScavengeServers)
+        ScavengeServers   = $scavengeResult
         RefreshInterval   = $dnsZoneAgingResult.RefreshInterval
         NoRefreshInterval = $dnsZoneAgingResult.NoRefreshInterval
     }
