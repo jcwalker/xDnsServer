@@ -13,7 +13,7 @@
         xDnsServerRootHint AddRoot-A
         {
             NameServer = 'a.root-servers.net'
-            IpAddress  = '198.41.0.4'#,'2001:503:ba3e::2:30'
+            IpAddress  = '198.41.0.4','2001:503:ba3e::2:30'
             Ensure     = 'Present'
         }
     }
