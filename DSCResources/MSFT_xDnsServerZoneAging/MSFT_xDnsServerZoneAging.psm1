@@ -24,7 +24,7 @@ function Get-TargetResource
     $returnValue = @{
         ZoneName          = $dnsZoneAgingResult.ZoneName
         AgingEnabled      = $dnsZoneAgingResult.AgingEnabled
-        ScavengeServers   = $dnsZoneAgingResult.ScavengeServers
+        ScavengeServers   = @($dnsZoneAgingResult.ScavengeServers)
         RefreshInterval   = $dnsZoneAgingResult.RefreshInterval
         NoRefreshInterval = $dnsZoneAgingResult.NoRefreshInterval
     }
